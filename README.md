@@ -27,8 +27,6 @@ The line at the top of the settings shows whether the mod is active, off, or sti
 - **Auto Loot All - Except Uranium.** Mines everything and leaves Uranium deposits alone.
 - **Auto Loot All - Destroy Uranium.** Mines everything, and removes Uranium deposits without giving you the Uranium.
 
-"Uranium" means any radioactive resource, so radioactive ores added by other mods count too.
-
 ## Good to know
 - When your inventory is full, looting stops and the rest of the deposit stays where it is.
 - Nothing is mined while the game is paused.
