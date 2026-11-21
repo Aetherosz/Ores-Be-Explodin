@@ -164,8 +164,33 @@ namespace
 	}
 }
 
+namespace
+{
+	/**
+	 * Labels for the Mode dropdown. Shipping builds have no UMETA display names, so without
+	 * this the menu shows the raw enumerator names ("LootAllExceptUranium").
+	 */
+	FText GetModeDisplayName(int32 Index)
+	{
+		switch (static_cast<EOresBeExplodinMode>(Index))
+		{
+		case EOresBeExplodinMode::LootAll:
+			return LOCTEXT("ModeLootAll", "Auto Loot All! (Warning: Uranium)");
+		case EOresBeExplodinMode::DestroyAll:
+			return LOCTEXT("ModeDestroyAll", "Auto Destroy All! (No Loot)");
+		case EOresBeExplodinMode::LootAllExceptUranium:
+			return LOCTEXT("ModeExceptUranium", "Auto Loot All - Except Uranium");
+		case EOresBeExplodinMode::LootAllDestroyUranium:
+			return LOCTEXT("ModeDestroyUranium", "Auto Loot All - Destroy Uranium");
+		}
+		return FText::GetEmpty();
+	}
+}
+
 void UOresBeExplodinConfig::UseMenuWidgets()
 {
+	StaticEnum<EOresBeExplodinMode>()->SetEnumDisplayNameFn(&GetModeDisplayName);
+
 	UOresBeExplodinConfig* Default = GetMutableDefault<UOresBeExplodinConfig>();
 	if (Default->RootSection)
 	{

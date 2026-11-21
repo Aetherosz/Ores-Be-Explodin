@@ -45,6 +45,11 @@ void FOresBeExplodin::RegisterHooks()
 			if (Id == UOresBeExplodinConfig::GetId())
 			{
 				Self->FlushPendingSaves();
+				// The scan timer is paused with the game, so refresh the status line here too.
+				if (UWorld* World = ScannedWorld.Get())
+				{
+					UpdateStatus(EMenuMode::InSave, World);
+				}
 			}
 		});
 
