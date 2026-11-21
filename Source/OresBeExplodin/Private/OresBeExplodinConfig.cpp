@@ -175,9 +175,9 @@ namespace
 		switch (static_cast<EOresBeExplodinMode>(Index))
 		{
 		case EOresBeExplodinMode::LootAll:
-			return LOCTEXT("ModeLootAll", "Auto Loot All! (Warning: Uranium)");
+			return LOCTEXT("ModeLootAll", "Auto Loot All - Warning: Uranium! Pack enough Iodine-Infused Filters");
 		case EOresBeExplodinMode::DestroyAll:
-			return LOCTEXT("ModeDestroyAll", "Auto Destroy All! (No Loot)");
+			return LOCTEXT("ModeDestroyAll", "Auto Destroy All - Did you know you can use Explosive Rebar?");
 		case EOresBeExplodinMode::LootAllExceptUranium:
 			return LOCTEXT("ModeExceptUranium", "Auto Loot All - Except Uranium");
 		case EOresBeExplodinMode::LootAllDestroyUranium:
