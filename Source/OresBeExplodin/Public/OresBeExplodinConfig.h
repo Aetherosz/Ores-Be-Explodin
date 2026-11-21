@@ -2,14 +2,14 @@
 
 #include "CoreMinimal.h"
 #include "Configuration/ModConfiguration.h"
-#include "AutoLootOresConfig.generated.h"
+#include "OresBeExplodinConfig.generated.h"
 
 /**
  * What to do with the deposits in range. The menu shows these names with spaces added
  * ("Loot All Except Uranium"); the stored value is the index.
  */
 UENUM()
-enum class EAutoLootOresMode : uint8
+enum class EOresBeExplodinMode : uint8
 {
 	/** Auto Loot All! (Warning: Uranium) */
 	LootAll,
@@ -23,27 +23,27 @@ enum class EAutoLootOresMode : uint8
 
 /**
  * Shows up in the game's Mods -> Mod Configuration menu (main menu and pause menu).
- * SML saves it to FactoryGame/Configs/AutoLootOres.cfg.
+ * SML saves it to FactoryGame/Configs/OresBeExplodin.cfg.
  */
 UCLASS()
-class UAutoLootOresConfig : public UModConfiguration
+class UOresBeExplodinConfig : public UModConfiguration
 {
 	GENERATED_BODY()
 
 public:
-	UAutoLootOresConfig();
+	UOresBeExplodinConfig();
 
 	/** Read-only line: whether auto-looting is active, and the hand-mined count. */
 	static const FString StatusKey;
 	static const FString EnabledKey;
-	/** EAutoLootOresMode as an integer. */
+	/** EOresBeExplodinMode as an integer. */
 	static const FString ModeKey;
 	/** Range in meters. */
 	static const FString RangeKey;
 	/** Deposits to mine out by hand (per save) before auto-looting starts. 0 = right away. */
 	static const FString ManualFirstKey;
 
-	static constexpr int32 DefaultMode = static_cast<int32>(EAutoLootOresMode::LootAllExceptUranium);
+	static constexpr int32 DefaultMode = static_cast<int32>(EOresBeExplodinMode::LootAllExceptUranium);
 	static constexpr int32 MinRange = 1;
 	static constexpr int32 MaxRange = 100;
 	static constexpr int32 DefaultRange = 10;

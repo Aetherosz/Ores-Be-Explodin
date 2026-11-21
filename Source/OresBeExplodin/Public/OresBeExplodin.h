@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AutoLootOresConfig.h"
+#include "OresBeExplodinConfig.h"
 
 class AFGCharacterPlayer;
 class AFGResourceDeposit;
@@ -14,7 +14,7 @@ class UWorld;
  * Mines the hand-mineable resource deposits near players. Runs on the server (single player,
  * host or dedicated server), so in multiplayer only the host needs it and its settings count.
  */
-class FAutoLootOres
+class FOresBeExplodin
 {
 public:
 	static void RegisterHooks();
@@ -34,7 +34,7 @@ private:
 
 	/** Timer on the server: handles the deposits in range of each player. */
 	static void Scan(UWorld* World);
-	static EDepositAction GetAction(EAutoLootOresMode Mode, const AFGResourceDeposit* Deposit);
+	static EDepositAction GetAction(EOresBeExplodinMode Mode, const AFGResourceDeposit* Deposit);
 
 	/**
 	 * Mines the deposit into the player's inventory through the game's own mining function, until

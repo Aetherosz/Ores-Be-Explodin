@@ -1,8 +1,8 @@
 using UnrealBuildTool;
 
-public class AutoLootOres : ModuleRules
+public class OresBeExplodin : ModuleRules
 {
-	public AutoLootOres(ReadOnlyTargetRules Target) : base(Target)
+	public OresBeExplodin(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		CppStandard = CppStandardVersion.Cpp20;

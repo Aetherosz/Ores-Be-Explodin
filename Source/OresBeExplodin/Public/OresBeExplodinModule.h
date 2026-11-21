@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FAutoLootOresModule : public IModuleInterface
+class FOresBeExplodinModule : public IModuleInterface
 {
 public:
 	virtual void StartupModule() override;

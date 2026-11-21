@@ -1,21 +1,21 @@
-#include "AutoLootOresSubsystem.h"
+#include "OresBeExplodinSubsystem.h"
 
 #include "Engine/World.h"
 #include "Subsystem/SubsystemActorManager.h"
 
-AAutoLootOresSubsystem::AAutoLootOresSubsystem()
+AOresBeExplodinSubsystem::AOresBeExplodinSubsystem()
 {
 	ReplicationPolicy = ESubsystemReplicationPolicy::SpawnOnServer;
 }
 
-AAutoLootOresSubsystem* AAutoLootOresSubsystem::Get(const UObject* WorldContext)
+AOresBeExplodinSubsystem* AOresBeExplodinSubsystem::Get(const UObject* WorldContext)
 {
 	UWorld* World = WorldContext ? WorldContext->GetWorld() : nullptr;
 	USubsystemActorManager* Manager = World ? World->GetSubsystem<USubsystemActorManager>() : nullptr;
-	return Manager ? Manager->GetSubsystemActor<AAutoLootOresSubsystem>() : nullptr;
+	return Manager ? Manager->GetSubsystemActor<AOresBeExplodinSubsystem>() : nullptr;
 }
 
-AAutoLootOresSubsystem* AAutoLootOresSubsystem::GetOrRegister(UWorld* World)
+AOresBeExplodinSubsystem* AOresBeExplodinSubsystem::GetOrRegister(UWorld* World)
 {
 	if (!World || World->GetNetMode() == NM_Client)
 	{
@@ -26,11 +26,11 @@ AAutoLootOresSubsystem* AAutoLootOresSubsystem::GetOrRegister(UWorld* World)
 	{
 		return nullptr;
 	}
-	if (AAutoLootOresSubsystem* Existing = Manager->GetSubsystemActor<AAutoLootOresSubsystem>())
+	if (AOresBeExplodinSubsystem* Existing = Manager->GetSubsystemActor<AOresBeExplodinSubsystem>())
 	{
 		return Existing;
 	}
 	// Finds the actor loaded from the save by name, or spawns a new one.
 	Manager->RegisterSubsystemActor(StaticClass());
-	return Manager->GetSubsystemActor<AAutoLootOresSubsystem>();
+	return Manager->GetSubsystemActor<AOresBeExplodinSubsystem>();
 }

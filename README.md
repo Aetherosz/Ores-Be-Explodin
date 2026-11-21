@@ -1,9 +1,9 @@
-# Auto Loot Ores
+# Ores Be Explodin'
 
-A Satisfactory mod (mod ID `AutoLootOres`) that automatically mines the loose ore deposits around you: the small boulders you normally mine by hand. Resource nodes for miners are not touched.
+A Satisfactory mod (mod ID `OresBeExplodin`) that automatically mines the loose ore deposits around you: the small boulders you normally mine by hand. Resource nodes for miners are not touched.
 
 ## Settings
-Open Mods -> Mod Configuration -> Auto Loot Ores, from the main menu or the pause menu. Changes apply right away.
+Open Mods -> Mod Configuration -> Ores Be Explodin', from the main menu or the pause menu. Changes apply right away.
 
 | Setting | What it does |
 |---|---|
@@ -27,4 +27,4 @@ Open Mods -> Mod Configuration -> Auto Loot Ores, from the main menu or the paus
 - Windows client only for now. No dedicated server builds.
 
 ## Building
-Put this repo at `<project>\Mods\AutoLootOres` in the SatisfactoryModLoader starter project (SML 3.12) and package it with Alpakit, or with `RunUAT.bat ... PackagePlugin -DLCName=AutoLootOres`.
+Put this repo at `<project>\Mods\OresBeExplodin` in the SatisfactoryModLoader starter project (SML 3.12) and package it with Alpakit, or with `RunUAT.bat ... PackagePlugin -DLCName=OresBeExplodin`.

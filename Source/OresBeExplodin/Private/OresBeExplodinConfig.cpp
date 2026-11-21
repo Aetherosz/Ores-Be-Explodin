@@ -1,38 +1,38 @@
-#include "AutoLootOresConfig.h"
+#include "OresBeExplodinConfig.h"
 
-#include "AutoLootOresLabel.h"
+#include "OresBeExplodinLabel.h"
 #include "Configuration/Properties/ConfigPropertyBool.h"
 #include "Configuration/Properties/ConfigPropertyInteger.h"
 #include "Configuration/Properties/ConfigPropertySection.h"
 #include "Configuration/Properties/WidgetExtension/CP_Integer.h"
 #include "Configuration/Properties/WidgetExtension/CP_Section.h"
 
-#define LOCTEXT_NAMESPACE "AutoLootOres"
+#define LOCTEXT_NAMESPACE "OresBeExplodin"
 
-const FString UAutoLootOresConfig::StatusKey = TEXT("Status");
-const FString UAutoLootOresConfig::EnabledKey = TEXT("Enabled");
-const FString UAutoLootOresConfig::ModeKey = TEXT("Mode");
-const FString UAutoLootOresConfig::RangeKey = TEXT("Range");
-const FString UAutoLootOresConfig::ManualFirstKey = TEXT("ManualFirst");
+const FString UOresBeExplodinConfig::StatusKey = TEXT("Status");
+const FString UOresBeExplodinConfig::EnabledKey = TEXT("Enabled");
+const FString UOresBeExplodinConfig::ModeKey = TEXT("Mode");
+const FString UOresBeExplodinConfig::RangeKey = TEXT("Range");
+const FString UOresBeExplodinConfig::ManualFirstKey = TEXT("ManualFirst");
 
-FConfigId UAutoLootOresConfig::GetId()
+FConfigId UOresBeExplodinConfig::GetId()
 {
 	FConfigId Id;
-	Id.ModReference = TEXT("AutoLootOres");
+	Id.ModReference = TEXT("OresBeExplodin");
 	Id.ConfigCategory = TEXT("");
 	return Id;
 }
 
-UAutoLootOresConfig::UAutoLootOresConfig()
+UOresBeExplodinConfig::UOresBeExplodinConfig()
 {
 	ConfigId = GetId();
-	DisplayName = LOCTEXT("ConfigName", "Auto Loot Ores");
+	DisplayName = LOCTEXT("ConfigName", "Ores Be Explodin'");
 	Description = LOCTEXT("ConfigDescription",
 		"Automatically mines the loose ore deposits around you. Changes apply right away. In multiplayer the host's settings count.");
 
 	RootSection = CreateDefaultSubobject<UConfigPropertySection>(TEXT("RootSection"));
 
-	UAutoLootOresLabel* Status = CreateDefaultSubobject<UAutoLootOresLabel>(TEXT("Status"));
+	UOresBeExplodinLabel* Status = CreateDefaultSubobject<UOresBeExplodinLabel>(TEXT("Status"));
 	Status->DisplayName = LOCTEXT("StatusMenu", "Load a save to see the status.");
 	Status->bAllowUserReset = false;
 	RootSection->SectionProperties.Add(StatusKey, Status);
@@ -102,7 +102,7 @@ namespace
 			*FString::Printf(TEXT("/SML/Interface/UI/Menu/Mods/ConfigProperties/%s.%s_C"), BlueprintName, BlueprintName));
 		if (!BlueprintClass)
 		{
-			UE_LOG(LogTemp, Error, TEXT("AutoLootOres: %s not found, the config menu will be empty"), BlueprintName);
+			UE_LOG(LogTemp, Error, TEXT("OresBeExplodin: %s not found, the config menu will be empty"), BlueprintName);
 			return Native;
 		}
 
@@ -125,19 +125,19 @@ namespace
 			if (UCP_Integer* Widget = Cast<UCP_Integer>(MenuInt))
 			{
 				// SML's default is a text box with min = max = 0.
-				if (Key == UAutoLootOresConfig::ModeKey)
+				if (Key == UOresBeExplodinConfig::ModeKey)
 				{
 					Widget->WidgetType = ECP_IntegerWidgetType::CPI_Enum;
-					Widget->EnumClass = StaticEnum<EAutoLootOresMode>();
+					Widget->EnumClass = StaticEnum<EOresBeExplodinMode>();
 					Widget->MinValue = 0;
-					Widget->MaxValue = static_cast<int32>(EAutoLootOresMode::LootAllDestroyUranium);
+					Widget->MaxValue = static_cast<int32>(EOresBeExplodinMode::LootAllDestroyUranium);
 				}
 				else
 				{
 					Widget->WidgetType = ECP_IntegerWidgetType::CPI_Spinbox;
-					const bool bRange = Key == UAutoLootOresConfig::RangeKey;
-					Widget->MinValue = bRange ? UAutoLootOresConfig::MinRange : 0;
-					Widget->MaxValue = bRange ? UAutoLootOresConfig::MaxRange : UAutoLootOresConfig::MaxManualFirst;
+					const bool bRange = Key == UOresBeExplodinConfig::RangeKey;
+					Widget->MinValue = bRange ? UOresBeExplodinConfig::MinRange : 0;
+					Widget->MaxValue = bRange ? UOresBeExplodinConfig::MaxRange : UOresBeExplodinConfig::MaxManualFirst;
 				}
 			}
 		}
@@ -164,9 +164,9 @@ namespace
 	}
 }
 
-void UAutoLootOresConfig::UseMenuWidgets()
+void UOresBeExplodinConfig::UseMenuWidgets()
 {
-	UAutoLootOresConfig* Default = GetMutableDefault<UAutoLootOresConfig>();
+	UOresBeExplodinConfig* Default = GetMutableDefault<UOresBeExplodinConfig>();
 	if (Default->RootSection)
 	{
 		Default->RootSection = CastChecked<UConfigPropertySection>(ToMenuProperty(Default->RootSection, Default, FString()));
