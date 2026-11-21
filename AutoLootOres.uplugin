@@ -1,0 +1,29 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0.0",
+	"SemVersion": "1.0.0",
+	"GameVersion": ">=491125",
+	"FriendlyName": "Auto Loot Ores",
+	"Description": "Automatically mines the loose ore deposits around you. Choose between looting everything, destroying everything, leaving Uranium alone or destroying Uranium. Configurable range, and it can wait until you have mined a few deposits by hand.",
+	"Category": "Modding",
+	"CreatedBy": "Aetherosz",
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "AutoLootOres",
+			"Type": "Runtime",
+			"LoadingPhase": "PostDefault"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "SML",
+			"Enabled": true,
+			"SemVersion": "^3.12.0"
+		}
+	]
+}
