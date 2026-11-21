@@ -3,7 +3,7 @@
 	"Version": 1,
 	"VersionName": "1.0.0",
 	"SemVersion": "1.0.0",
-	"GameVersion": ">=491125",
+	"GameVersion": ">=520140",
 	"FriendlyName": "Ores Be Explodin'",
 	"Description": "Automatically mines the loose ore deposits around you. Choose between looting everything, destroying everything, leaving Uranium alone or destroying Uranium. Configurable range, and it can wait until you have mined a few deposits by hand.",
 	"Category": "Modding",
@@ -23,7 +23,7 @@
 		{
 			"Name": "SML",
 			"Enabled": true,
-			"SemVersion": "^3.12.0"
+			"SemVersion": "^3.12.1"
 		}
 	]
 }
