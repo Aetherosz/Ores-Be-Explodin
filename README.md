@@ -7,6 +7,9 @@ Walk past a deposit and it pops. Loot it, destroy it, or leave the Uranium alone
 ![Ores Be Explodin' in action](Media/demo.gif)
 
 ## Settings
+
+![The mod's settings](Media/settings.png)
+
 Open Mods -> Mod Configuration -> Ores Be Explodin', from the main menu or the pause menu. Changes apply right away.
 
 | Setting | What it does |
