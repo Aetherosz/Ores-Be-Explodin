@@ -406,8 +406,9 @@ void FOresBeExplodin::UpdateStatus(EMenuMode Mode, UWorld* World)
 	}
 	else if (Mined < ManualFirst)
 	{
-		SetStatusText(FString::Printf(TEXT("Waiting: mine %d more deposit(s) by hand to start auto-looting (%d of %d done)."),
-			ManualFirst - Mined, Mined, ManualFirst));
+		const int32 Left = ManualFirst - Mined;
+		SetStatusText(FString::Printf(TEXT("Waiting: Mine %d more %s by hand to start auto-looting (%d of %d done)."),
+			Left, Left == 1 ? TEXT("deposit") : TEXT("deposits"), Mined, ManualFirst));
 	}
 	else
 	{
