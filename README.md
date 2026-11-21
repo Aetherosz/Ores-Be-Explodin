@@ -4,6 +4,8 @@ A Satisfactory mod (mod ID `OresBeExplodin`) that automatically mines the loose 
 
 Walk past a deposit and it pops. Loot it, destroy it, or leave the Uranium alone: your call.
 
+![Ores Be Explodin' in action](Media/demo.gif)
+
 ## Settings
 Open Mods -> Mod Configuration -> Ores Be Explodin', from the main menu or the pause menu. Changes apply right away.
 
