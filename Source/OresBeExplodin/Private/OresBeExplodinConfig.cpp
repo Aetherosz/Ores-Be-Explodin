@@ -52,7 +52,6 @@ UOresBeExplodinConfig::UOresBeExplodinConfig()
 		"Destroy All: removes every deposit in range. You get nothing.\n"
 		"Loot All Except Uranium: mines everything, leaves Uranium deposits alone.\n"
 		"Loot All Destroy Uranium: mines everything, removes Uranium deposits without giving you the Uranium.\n"
-		"\"Uranium\" means any radioactive resource, so radioactive ores from other mods count too.\n"
 		"When your inventory is full, looting stops and the rest of the deposit stays.");
 	Mode->DefaultValue = DefaultMode;
 	Mode->Value = DefaultMode;

@@ -207,7 +207,7 @@ FOresBeExplodin::EDepositAction FOresBeExplodin::GetAction(EOresBeExplodinMode M
 	{
 		return EDepositAction::Skip; // not set up yet
 	}
-	// "Uranium" = anything radioactive, which also covers radioactive ores added by other mods.
+	// Uranium is detected by radioactivity, not by name.
 	const bool bRadioactive = UFGItemDescriptor::GetRadioactiveDecay(Resource) > 0.f;
 	switch (Mode)
 	{
