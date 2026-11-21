@@ -1,16 +1,16 @@
-#include "OresBeExplodinLabel.h"
+#include "OresBeExplodingLabel.h"
 
 #include "Styling/CoreStyle.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
 
-UUserWidget* UOresBeExplodinLabel::CreateEditorWidget_Implementation(UUserWidget* ParentWidget) const
+UUserWidget* UOresBeExplodingLabel::CreateEditorWidget_Implementation(UUserWidget* ParentWidget) const
 {
 	if (!ParentWidget)
 	{
 		return nullptr;
 	}
-	UOresBeExplodinLabelWidget* Widget = CreateWidget<UOresBeExplodinLabelWidget>(ParentWidget, UOresBeExplodinLabelWidget::StaticClass());
+	UOresBeExplodingLabelWidget* Widget = CreateWidget<UOresBeExplodingLabelWidget>(ParentWidget, UOresBeExplodingLabelWidget::StaticClass());
 	if (Widget)
 	{
 		Widget->Label = this;
@@ -18,7 +18,7 @@ UUserWidget* UOresBeExplodinLabel::CreateEditorWidget_Implementation(UUserWidget
 	return Widget;
 }
 
-TSharedRef<SWidget> UOresBeExplodinLabelWidget::RebuildWidget()
+TSharedRef<SWidget> UOresBeExplodingLabelWidget::RebuildWidget()
 {
 	const TWeakObjectPtr<const UConfigProperty> WeakLabel = Label;
 	return SNew(SBox)

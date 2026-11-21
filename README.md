@@ -1,6 +1,6 @@
 # Ores Be Explodin'
 
-A Satisfactory mod (mod ID `OresBeExplodin`) that automatically mines the loose ore deposits around you: the small boulders you normally mine by hand. Resource nodes for miners are not touched.
+A Satisfactory mod (mod ID `OresBeExploding`) that automatically mines the loose ore deposits around you: the small boulders you normally mine by hand. Resource nodes for miners are not touched.
 
 Walk past a deposit and it pops. Loot it, destroy it, or leave the Uranium alone: your call.
 
@@ -38,4 +38,4 @@ The line at the top of the settings shows whether the mod is active, off, or sti
 - SML 3.12.1 or newer
 
 ## Building
-Put this repo at `<project>\Mods\OresBeExplodin` in the SatisfactoryModLoader starter project (SML 3.12.1) and package it with Alpakit, or with `RunUAT.bat ... PackagePlugin -DLCName=OresBeExplodin`.
+Put this repo at `<project>\Mods\OresBeExploding` in the SatisfactoryModLoader starter project (SML 3.12.1) and package it with Alpakit, or with `RunUAT.bat ... PackagePlugin -DLCName=OresBeExploding`.

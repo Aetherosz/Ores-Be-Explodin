@@ -1,8 +1,8 @@
 using UnrealBuildTool;
 
-public class OresBeExplodin : ModuleRules
+public class OresBeExploding : ModuleRules
 {
-	public OresBeExplodin(ReadOnlyTargetRules Target) : base(Target)
+	public OresBeExploding(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		CppStandard = CppStandardVersion.Cpp20;

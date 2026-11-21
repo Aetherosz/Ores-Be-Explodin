@@ -14,7 +14,7 @@
 	"Installed": false,
 	"Modules": [
 		{
-			"Name": "OresBeExplodin",
+			"Name": "OresBeExploding",
 			"Type": "Runtime",
 			"LoadingPhase": "PostDefault"
 		}

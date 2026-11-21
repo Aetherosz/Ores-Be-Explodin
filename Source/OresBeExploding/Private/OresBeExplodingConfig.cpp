@@ -1,29 +1,29 @@
-#include "OresBeExplodinConfig.h"
+#include "OresBeExplodingConfig.h"
 
-#include "OresBeExplodinLabel.h"
+#include "OresBeExplodingLabel.h"
 #include "Configuration/Properties/ConfigPropertyBool.h"
 #include "Configuration/Properties/ConfigPropertyInteger.h"
 #include "Configuration/Properties/ConfigPropertySection.h"
 #include "Configuration/Properties/WidgetExtension/CP_Integer.h"
 #include "Configuration/Properties/WidgetExtension/CP_Section.h"
 
-#define LOCTEXT_NAMESPACE "OresBeExplodin"
+#define LOCTEXT_NAMESPACE "OresBeExploding"
 
-const FString UOresBeExplodinConfig::StatusKey = TEXT("Status");
-const FString UOresBeExplodinConfig::EnabledKey = TEXT("Enabled");
-const FString UOresBeExplodinConfig::ModeKey = TEXT("Mode");
-const FString UOresBeExplodinConfig::RangeKey = TEXT("Range");
-const FString UOresBeExplodinConfig::ManualFirstKey = TEXT("ManualFirst");
+const FString UOresBeExplodingConfig::StatusKey = TEXT("Status");
+const FString UOresBeExplodingConfig::EnabledKey = TEXT("Enabled");
+const FString UOresBeExplodingConfig::ModeKey = TEXT("Mode");
+const FString UOresBeExplodingConfig::RangeKey = TEXT("Range");
+const FString UOresBeExplodingConfig::ManualFirstKey = TEXT("ManualFirst");
 
-FConfigId UOresBeExplodinConfig::GetId()
+FConfigId UOresBeExplodingConfig::GetId()
 {
 	FConfigId Id;
-	Id.ModReference = TEXT("OresBeExplodin");
+	Id.ModReference = TEXT("OresBeExploding");
 	Id.ConfigCategory = TEXT("");
 	return Id;
 }
 
-UOresBeExplodinConfig::UOresBeExplodinConfig()
+UOresBeExplodingConfig::UOresBeExplodingConfig()
 {
 	ConfigId = GetId();
 	DisplayName = LOCTEXT("ConfigName", "Ores Be Explodin'");
@@ -32,7 +32,7 @@ UOresBeExplodinConfig::UOresBeExplodinConfig()
 
 	RootSection = CreateDefaultSubobject<UConfigPropertySection>(TEXT("RootSection"));
 
-	UOresBeExplodinLabel* Status = CreateDefaultSubobject<UOresBeExplodinLabel>(TEXT("Status"));
+	UOresBeExplodingLabel* Status = CreateDefaultSubobject<UOresBeExplodingLabel>(TEXT("Status"));
 	Status->DisplayName = LOCTEXT("StatusMenu", "Load a save to see the status.");
 	Status->bAllowUserReset = false;
 	RootSection->SectionProperties.Add(StatusKey, Status);
@@ -101,7 +101,7 @@ namespace
 			*FString::Printf(TEXT("/SML/Interface/UI/Menu/Mods/ConfigProperties/%s.%s_C"), BlueprintName, BlueprintName));
 		if (!BlueprintClass)
 		{
-			UE_LOG(LogTemp, Error, TEXT("OresBeExplodin: %s not found, the config menu will be empty"), BlueprintName);
+			UE_LOG(LogTemp, Error, TEXT("OresBeExploding: %s not found, the config menu will be empty"), BlueprintName);
 			return Native;
 		}
 
@@ -124,19 +124,19 @@ namespace
 			if (UCP_Integer* Widget = Cast<UCP_Integer>(MenuInt))
 			{
 				// SML's default is a text box with min = max = 0.
-				if (Key == UOresBeExplodinConfig::ModeKey)
+				if (Key == UOresBeExplodingConfig::ModeKey)
 				{
 					Widget->WidgetType = ECP_IntegerWidgetType::CPI_Enum;
-					Widget->EnumClass = StaticEnum<EOresBeExplodinMode>();
+					Widget->EnumClass = StaticEnum<EOresBeExplodingMode>();
 					Widget->MinValue = 0;
-					Widget->MaxValue = static_cast<int32>(EOresBeExplodinMode::LootAllDestroyUranium);
+					Widget->MaxValue = static_cast<int32>(EOresBeExplodingMode::LootAllDestroyUranium);
 				}
 				else
 				{
 					Widget->WidgetType = ECP_IntegerWidgetType::CPI_Spinbox;
-					const bool bRange = Key == UOresBeExplodinConfig::RangeKey;
-					Widget->MinValue = bRange ? UOresBeExplodinConfig::MinRange : 0;
-					Widget->MaxValue = bRange ? UOresBeExplodinConfig::MaxRange : UOresBeExplodinConfig::MaxManualFirst;
+					const bool bRange = Key == UOresBeExplodingConfig::RangeKey;
+					Widget->MinValue = bRange ? UOresBeExplodingConfig::MinRange : 0;
+					Widget->MaxValue = bRange ? UOresBeExplodingConfig::MaxRange : UOresBeExplodingConfig::MaxManualFirst;
 				}
 			}
 		}
@@ -171,26 +171,26 @@ namespace
 	 */
 	FText GetModeDisplayName(int32 Index)
 	{
-		switch (static_cast<EOresBeExplodinMode>(Index))
+		switch (static_cast<EOresBeExplodingMode>(Index))
 		{
-		case EOresBeExplodinMode::LootAll:
+		case EOresBeExplodingMode::LootAll:
 			return LOCTEXT("ModeLootAll", "Auto Loot All - Warning: Uranium! Pack enough Iodine-Infused Filters");
-		case EOresBeExplodinMode::DestroyAll:
+		case EOresBeExplodingMode::DestroyAll:
 			return LOCTEXT("ModeDestroyAll", "Auto Destroy All - Did you know you can use Explosive Rebar?");
-		case EOresBeExplodinMode::LootAllExceptUranium:
+		case EOresBeExplodingMode::LootAllExceptUranium:
 			return LOCTEXT("ModeExceptUranium", "Auto Loot All - Except Uranium");
-		case EOresBeExplodinMode::LootAllDestroyUranium:
+		case EOresBeExplodingMode::LootAllDestroyUranium:
 			return LOCTEXT("ModeDestroyUranium", "Auto Loot All - Destroy Uranium");
 		}
 		return FText::GetEmpty();
 	}
 }
 
-void UOresBeExplodinConfig::UseMenuWidgets()
+void UOresBeExplodingConfig::UseMenuWidgets()
 {
-	StaticEnum<EOresBeExplodinMode>()->SetEnumDisplayNameFn(&GetModeDisplayName);
+	StaticEnum<EOresBeExplodingMode>()->SetEnumDisplayNameFn(&GetModeDisplayName);
 
-	UOresBeExplodinConfig* Default = GetMutableDefault<UOresBeExplodinConfig>();
+	UOresBeExplodingConfig* Default = GetMutableDefault<UOresBeExplodingConfig>();
 	if (Default->RootSection)
 	{
 		Default->RootSection = CastChecked<UConfigPropertySection>(ToMenuProperty(Default->RootSection, Default, FString()));

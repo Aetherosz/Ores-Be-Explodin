@@ -1,6 +1,6 @@
-#include "OresBeExplodin.h"
+#include "OresBeExploding.h"
 
-#include "OresBeExplodinSubsystem.h"
+#include "OresBeExplodingSubsystem.h"
 
 #include "Configuration/ConfigManager.h"
 #include "Configuration/Properties/ConfigPropertyBool.h"
@@ -18,22 +18,22 @@
 #include "TimerManager.h"
 #include "UObject/UnrealType.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogOresBeExplodin, Log, All);
+DEFINE_LOG_CATEGORY_STATIC(LogOresBeExploding, Log, All);
 
-TWeakObjectPtr<UConfigManager> FOresBeExplodin::ConfigManager;
-TWeakObjectPtr<UWorld> FOresBeExplodin::ScannedWorld;
-bool FOresBeExplodin::bAutoMining = false;
+TWeakObjectPtr<UConfigManager> FOresBeExploding::ConfigManager;
+TWeakObjectPtr<UWorld> FOresBeExploding::ScannedWorld;
+bool FOresBeExploding::bAutoMining = false;
 
 // ---------------------------------------------------------------------------
 // Hooks
 // ---------------------------------------------------------------------------
 
-void FOresBeExplodin::RegisterHooks()
+void FOresBeExploding::RegisterHooks()
 {
 	// Register the mod config as soon as the game instance exists, so it is
 	// listed in the main menu's Mods -> Mod Configuration before any save loads.
-	FWorldDelegates::OnStartGameInstance.AddStatic(&FOresBeExplodin::RegisterConfig);
-	FWorldDelegates::OnWorldCleanup.AddStatic(&FOresBeExplodin::OnWorldCleanup);
+	FWorldDelegates::OnStartGameInstance.AddStatic(&FOresBeExploding::RegisterConfig);
+	FWorldDelegates::OnWorldCleanup.AddStatic(&FOresBeExploding::OnWorldCleanup);
 
 #if !WITH_EDITOR
 	// Write config changes right away. SML otherwise saves on a timer that doesn't run while the
@@ -42,7 +42,7 @@ void FOresBeExplodin::RegisterHooks()
 	SUBSCRIBE_METHOD_AFTER(UConfigManager::MarkConfigurationDirty,
 		[](UConfigManager* Self, const FConfigId& Id)
 		{
-			if (Id == UOresBeExplodinConfig::GetId())
+			if (Id == UOresBeExplodingConfig::GetId())
 			{
 				Self->FlushPendingSaves();
 				// The scan timer is paused with the game, so refresh the status line here too.
@@ -74,7 +74,7 @@ void FOresBeExplodin::RegisterHooks()
 			if (ScannedWorld.Get() != World)
 			{
 				ScannedWorld = World;
-				AOresBeExplodinSubsystem::GetOrRegister(World);
+				AOresBeExplodingSubsystem::GetOrRegister(World);
 				// World timers stop while single player is paused, so nothing is mined behind a menu.
 				FTimerHandle Handle;
 				World->GetTimerManager().SetTimer(Handle,
@@ -102,7 +102,7 @@ void FOresBeExplodin::RegisterHooks()
 #endif
 }
 
-void FOresBeExplodin::OnWorldCleanup(UWorld* World, bool bSessionEnded, bool bCleanupResources)
+void FOresBeExploding::OnWorldCleanup(UWorld* World, bool bSessionEnded, bool bCleanupResources)
 {
 	if (!World || !World->IsGameWorld())
 	{
@@ -119,7 +119,7 @@ void FOresBeExplodin::OnWorldCleanup(UWorld* World, bool bSessionEnded, bool bCl
 // Scanning
 // ---------------------------------------------------------------------------
 
-void FOresBeExplodin::Scan(UWorld* World)
+void FOresBeExploding::Scan(UWorld* World)
 {
 	if (!World || World->GetNetMode() == NM_Client)
 	{
@@ -127,23 +127,23 @@ void FOresBeExplodin::Scan(UWorld* World)
 	}
 	UpdateStatus(EMenuMode::InSave, World);
 
-	if (!GetConfigBool(UOresBeExplodinConfig::EnabledKey, true))
+	if (!GetConfigBool(UOresBeExplodingConfig::EnabledKey, true))
 	{
 		return;
 	}
-	const AOresBeExplodinSubsystem* Subsystem = AOresBeExplodinSubsystem::Get(World);
-	const int32 ManualFirst = FMath::Clamp(GetConfigInt(UOresBeExplodinConfig::ManualFirstKey, 0), 0, UOresBeExplodinConfig::MaxManualFirst);
+	const AOresBeExplodingSubsystem* Subsystem = AOresBeExplodingSubsystem::Get(World);
+	const int32 ManualFirst = FMath::Clamp(GetConfigInt(UOresBeExplodingConfig::ManualFirstKey, 0), 0, UOresBeExplodingConfig::MaxManualFirst);
 	if (ManualFirst > 0 && (!Subsystem || Subsystem->GetManuallyMined() < ManualFirst))
 	{
 		return;
 	}
 
-	const int32 ModeValue = GetConfigInt(UOresBeExplodinConfig::ModeKey, UOresBeExplodinConfig::DefaultMode);
-	const EOresBeExplodinMode Mode = ModeValue >= 0 && ModeValue <= static_cast<int32>(EOresBeExplodinMode::LootAllDestroyUranium)
-		? static_cast<EOresBeExplodinMode>(ModeValue)
-		: static_cast<EOresBeExplodinMode>(UOresBeExplodinConfig::DefaultMode);
-	const float RangeCm = 100.f * FMath::Clamp(GetConfigInt(UOresBeExplodinConfig::RangeKey, UOresBeExplodinConfig::DefaultRange),
-		UOresBeExplodinConfig::MinRange, UOresBeExplodinConfig::MaxRange);
+	const int32 ModeValue = GetConfigInt(UOresBeExplodingConfig::ModeKey, UOresBeExplodingConfig::DefaultMode);
+	const EOresBeExplodingMode Mode = ModeValue >= 0 && ModeValue <= static_cast<int32>(EOresBeExplodingMode::LootAllDestroyUranium)
+		? static_cast<EOresBeExplodingMode>(ModeValue)
+		: static_cast<EOresBeExplodingMode>(UOresBeExplodingConfig::DefaultMode);
+	const float RangeCm = 100.f * FMath::Clamp(GetConfigInt(UOresBeExplodingConfig::RangeKey, UOresBeExplodingConfig::DefaultRange),
+		UOresBeExplodingConfig::MinRange, UOresBeExplodingConfig::MaxRange);
 	const double RangeSquared = FMath::Square(static_cast<double>(RangeCm));
 
 	// Players who are in the game right now. The bodies of offline players stay in the world
@@ -200,7 +200,7 @@ void FOresBeExplodin::Scan(UWorld* World)
 	}
 }
 
-FOresBeExplodin::EDepositAction FOresBeExplodin::GetAction(EOresBeExplodinMode Mode, const AFGResourceDeposit* Deposit)
+FOresBeExploding::EDepositAction FOresBeExploding::GetAction(EOresBeExplodingMode Mode, const AFGResourceDeposit* Deposit)
 {
 	const TSubclassOf<UFGResourceDescriptor> Resource = Deposit->GetResourceClass();
 	if (!Resource)
@@ -211,13 +211,13 @@ FOresBeExplodin::EDepositAction FOresBeExplodin::GetAction(EOresBeExplodinMode M
 	const bool bRadioactive = UFGItemDescriptor::GetRadioactiveDecay(Resource) > 0.f;
 	switch (Mode)
 	{
-	case EOresBeExplodinMode::LootAll:
+	case EOresBeExplodingMode::LootAll:
 		return EDepositAction::Loot;
-	case EOresBeExplodinMode::DestroyAll:
+	case EOresBeExplodingMode::DestroyAll:
 		return EDepositAction::Destroy;
-	case EOresBeExplodinMode::LootAllExceptUranium:
+	case EOresBeExplodingMode::LootAllExceptUranium:
 		return bRadioactive ? EDepositAction::Skip : EDepositAction::Loot;
-	case EOresBeExplodinMode::LootAllDestroyUranium:
+	case EOresBeExplodingMode::LootAllDestroyUranium:
 		return bRadioactive ? EDepositAction::Destroy : EDepositAction::Loot;
 	}
 	return EDepositAction::Skip;
@@ -227,19 +227,19 @@ FOresBeExplodin::EDepositAction FOresBeExplodin::GetAction(EOresBeExplodinMode M
 // Mining
 // ---------------------------------------------------------------------------
 
-int32 FOresBeExplodin::GetResourcesLeft(const AFGResourceDeposit* Deposit)
+int32 FOresBeExploding::GetResourcesLeft(const AFGResourceDeposit* Deposit)
 {
 	// Protected in the game's header; read through reflection instead of an access transformer.
 	static const FIntProperty* Property = FindFProperty<FIntProperty>(AFGResourceNode::StaticClass(), TEXT("mResourcesLeft"));
 	return Property ? Property->GetPropertyValue_InContainer(Deposit) : 0;
 }
 
-bool FOresBeExplodin::IsMinedOut(AFGResourceDeposit* Deposit)
+bool FOresBeExploding::IsMinedOut(AFGResourceDeposit* Deposit)
 {
 	return Deposit->IsDepositEmpty() || !Deposit->HasAnyResources();
 }
 
-bool FOresBeExplodin::MineOut(AFGResourceDeposit* Deposit, AFGCharacterPlayer* Player)
+bool FOresBeExploding::MineOut(AFGResourceDeposit* Deposit, AFGCharacterPlayer* Player)
 {
 	UFGInventoryComponent* Inventory = Player->GetInventory();
 	const TSubclassOf<UFGResourceDescriptor> Resource = Deposit->GetResourceClass();
@@ -268,7 +268,7 @@ bool FOresBeExplodin::MineOut(AFGResourceDeposit* Deposit, AFGCharacterPlayer* P
 	return bMinedAnything;
 }
 
-void FOresBeExplodin::DestroyDeposit(AFGResourceDeposit* Deposit, AFGCharacterPlayer* Player)
+void FOresBeExploding::DestroyDeposit(AFGResourceDeposit* Deposit, AFGCharacterPlayer* Player)
 {
 	UFGInventoryComponent* Inventory = Player->GetInventory();
 	const TSubclassOf<UFGResourceDescriptor> Resource = Deposit->GetResourceClass();
@@ -290,7 +290,7 @@ void FOresBeExplodin::DestroyDeposit(AFGResourceDeposit* Deposit, AFGCharacterPl
 	}
 }
 
-void FOresBeExplodin::ForceDeplete(AFGResourceDeposit* Deposit)
+void FOresBeExploding::ForceDeplete(AFGResourceDeposit* Deposit)
 {
 	for (int32 Guard = 0; Guard < 16 && Deposit->HasAnyResources(); ++Guard)
 	{
@@ -302,7 +302,7 @@ void FOresBeExplodin::ForceDeplete(AFGResourceDeposit* Deposit)
 	}
 	if (Deposit->HasAnyResources())
 	{
-		UE_LOG(LogOresBeExplodin, Warning, TEXT("Couldn't empty %s"), *Deposit->GetName());
+		UE_LOG(LogOresBeExploding, Warning, TEXT("Couldn't empty %s"), *Deposit->GetName());
 		return;
 	}
 	if (!Deposit->IsDepositEmpty())
@@ -320,12 +320,12 @@ void FOresBeExplodin::ForceDeplete(AFGResourceDeposit* Deposit)
 		Deposit->FlushNetDormancy();
 		Deposit->ForceNetUpdate();
 	}
-	UE_LOG(LogOresBeExplodin, Verbose, TEXT("Emptied %s directly"), *Deposit->GetName());
+	UE_LOG(LogOresBeExploding, Verbose, TEXT("Emptied %s directly"), *Deposit->GetName());
 }
 
-void FOresBeExplodin::OnManuallyMined(UWorld* World)
+void FOresBeExploding::OnManuallyMined(UWorld* World)
 {
-	if (AOresBeExplodinSubsystem* Subsystem = AOresBeExplodinSubsystem::GetOrRegister(World))
+	if (AOresBeExplodingSubsystem* Subsystem = AOresBeExplodingSubsystem::GetOrRegister(World))
 	{
 		Subsystem->AddManuallyMined();
 		UpdateStatus(EMenuMode::InSave, World);
@@ -336,7 +336,7 @@ void FOresBeExplodin::OnManuallyMined(UWorld* World)
 // Mod config
 // ---------------------------------------------------------------------------
 
-void FOresBeExplodin::RegisterConfig(UGameInstance* GameInstance)
+void FOresBeExploding::RegisterConfig(UGameInstance* GameInstance)
 {
 	if (!GameInstance || ConfigManager.IsValid())
 	{
@@ -345,45 +345,45 @@ void FOresBeExplodin::RegisterConfig(UGameInstance* GameInstance)
 	UConfigManager* Manager = GameInstance->GetSubsystem<UConfigManager>();
 	if (!Manager)
 	{
-		UE_LOG(LogOresBeExplodin, Error, TEXT("SML config manager not found; using default settings"));
+		UE_LOG(LogOresBeExploding, Error, TEXT("SML config manager not found; using default settings"));
 		return;
 	}
-	UOresBeExplodinConfig::UseMenuWidgets();
-	Manager->RegisterModConfiguration(UOresBeExplodinConfig::StaticClass());
+	UOresBeExplodingConfig::UseMenuWidgets();
+	Manager->RegisterModConfiguration(UOresBeExplodingConfig::StaticClass());
 	ConfigManager = Manager;
 	UpdateStatus(EMenuMode::MainMenu);
 }
 
-UConfigProperty* FOresBeExplodin::GetConfigProperty(const FString& Key)
+UConfigProperty* FOresBeExploding::GetConfigProperty(const FString& Key)
 {
 	UConfigManager* Manager = ConfigManager.Get();
-	UConfigPropertySection* Root = Manager ? Manager->GetConfigurationRootSection(UOresBeExplodinConfig::GetId()) : nullptr;
+	UConfigPropertySection* Root = Manager ? Manager->GetConfigurationRootSection(UOresBeExplodingConfig::GetId()) : nullptr;
 	const TObjectPtr<UConfigProperty>* Property = Root ? Root->SectionProperties.Find(Key) : nullptr;
 	return Property ? Property->Get() : nullptr;
 }
 
-int32 FOresBeExplodin::GetConfigInt(const FString& Key, int32 Fallback)
+int32 FOresBeExploding::GetConfigInt(const FString& Key, int32 Fallback)
 {
 	const UConfigPropertyInteger* Property = Cast<UConfigPropertyInteger>(GetConfigProperty(Key));
 	return Property ? Property->Value : Fallback;
 }
 
-bool FOresBeExplodin::GetConfigBool(const FString& Key, bool bFallback)
+bool FOresBeExploding::GetConfigBool(const FString& Key, bool bFallback)
 {
 	const UConfigPropertyBool* Property = Cast<UConfigPropertyBool>(GetConfigProperty(Key));
 	return Property ? Property->Value : bFallback;
 }
 
-void FOresBeExplodin::SetStatusText(const FString& Text)
+void FOresBeExploding::SetStatusText(const FString& Text)
 {
-	// The label (UOresBeExplodinLabel) redraws its DisplayName every frame.
-	if (UConfigProperty* Status = GetConfigProperty(UOresBeExplodinConfig::StatusKey))
+	// The label (UOresBeExplodingLabel) redraws its DisplayName every frame.
+	if (UConfigProperty* Status = GetConfigProperty(UOresBeExplodingConfig::StatusKey))
 	{
 		Status->DisplayName = FText::FromString(Text);
 	}
 }
 
-void FOresBeExplodin::UpdateStatus(EMenuMode Mode, UWorld* World)
+void FOresBeExploding::UpdateStatus(EMenuMode Mode, UWorld* World)
 {
 	switch (Mode)
 	{
@@ -397,10 +397,10 @@ void FOresBeExplodin::UpdateStatus(EMenuMode Mode, UWorld* World)
 		break;
 	}
 
-	const AOresBeExplodinSubsystem* Subsystem = AOresBeExplodinSubsystem::Get(World);
+	const AOresBeExplodingSubsystem* Subsystem = AOresBeExplodingSubsystem::Get(World);
 	const int32 Mined = Subsystem ? Subsystem->GetManuallyMined() : 0;
-	const int32 ManualFirst = FMath::Clamp(GetConfigInt(UOresBeExplodinConfig::ManualFirstKey, 0), 0, UOresBeExplodinConfig::MaxManualFirst);
-	if (!GetConfigBool(UOresBeExplodinConfig::EnabledKey, true))
+	const int32 ManualFirst = FMath::Clamp(GetConfigInt(UOresBeExplodingConfig::ManualFirstKey, 0), 0, UOresBeExplodingConfig::MaxManualFirst);
+	if (!GetConfigBool(UOresBeExplodingConfig::EnabledKey, true))
 	{
 		SetStatusText(FString::Printf(TEXT("Off. Deposits mined by hand in this save: %d."), Mined));
 	}

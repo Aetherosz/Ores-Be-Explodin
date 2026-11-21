@@ -3,21 +3,21 @@
 #include "CoreMinimal.h"
 #include "FGSaveInterface.h"
 #include "Subsystem/ModSubsystem.h"
-#include "OresBeExplodinSubsystem.generated.h"
+#include "OresBeExplodingSubsystem.generated.h"
 
 /** Counts the deposits mined out by hand in this save. Written into the save file. Server only. */
 UCLASS()
-class AOresBeExplodinSubsystem : public AModSubsystem, public IFGSaveInterface
+class AOresBeExplodingSubsystem : public AModSubsystem, public IFGSaveInterface
 {
 	GENERATED_BODY()
 
 public:
-	AOresBeExplodinSubsystem();
+	AOresBeExplodingSubsystem();
 
 	/** The subsystem for this world, or null (main menu, clients, not registered yet). */
-	static AOresBeExplodinSubsystem* Get(const UObject* WorldContext);
+	static AOresBeExplodingSubsystem* Get(const UObject* WorldContext);
 	/** Registers the subsystem, adopting the instance loaded from the save if there is one. Server only. */
-	static AOresBeExplodinSubsystem* GetOrRegister(UWorld* World);
+	static AOresBeExplodingSubsystem* GetOrRegister(UWorld* World);
 
 	int32 GetManuallyMined() const { return ManuallyMined; }
 	void AddManuallyMined() { ++ManuallyMined; }

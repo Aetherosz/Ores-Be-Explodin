@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Configuration/Properties/ConfigPropertySection.h"
-#include "OresBeExplodinLabel.generated.h"
+#include "OresBeExplodingLabel.generated.h"
 
 /**
  * A read-only line of text in the mod config menu. SML has no label property, so this is an
@@ -11,7 +11,7 @@
  * the collapse arrow and divider SML's own section widget adds.
  */
 UCLASS()
-class UOresBeExplodinLabel : public UConfigPropertySection
+class UOresBeExplodingLabel : public UConfigPropertySection
 {
 	GENERATED_BODY()
 
@@ -21,7 +21,7 @@ public:
 
 /** Shows a label's DisplayName. Redrawn every frame, so text changes appear while the menu is open. */
 UCLASS()
-class UOresBeExplodinLabelWidget : public UUserWidget
+class UOresBeExplodingLabelWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
